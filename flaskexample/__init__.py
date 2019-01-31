@@ -31,8 +31,6 @@ def upload_file():
     if request.method == 'POST':
         #print(request.form,'files:',request.files)
         L_touse=request.form['L']
-        if L_touse=='':
-        	L_touse=1.
         # check if the post request has the file part
         if 'file' not in request.files:
             #flash('No file part')
@@ -46,6 +44,12 @@ def upload_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            path=backend.load_path(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            if len(L_touse)==0:
+                route_length=backend.path_len(path)
+                L_touse=route_length/100.
+            else:
+                L_touse=float(L_touse)
             return redirect(url_for('show_temp_page',
                                     filename=filename,L_touse=L_touse))
     return '''
