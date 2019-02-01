@@ -102,7 +102,7 @@
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 10,
           center: {lat: {{center_lat}}, lng: {{center_long}}},
-          mapTypeId: 'satellite'
+          mapTypeId: 'hybrid'
         });
         google.maps.event.addListener(map, 'click', function(e) {
     placeMarker(e.latLng, map);

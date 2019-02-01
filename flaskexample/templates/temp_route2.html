@@ -42,6 +42,7 @@
         margin: 0;
         padding: 0;
       }
+      input { display: inline; }
     </style>
   </head>
 
@@ -76,6 +77,12 @@
         <p>Feel free to explore your route below</p>
     </div></div>
 
+
+<form id="Export_button" action='/export_route/{{filename}}' method=get>
+  <div align="center">
+  <button type="submit" id="export_button" class="btn btn-default btn-lg">Export route!</button>
+</div>
+</form>
 
 
     <div id="map"></div>
@@ -117,7 +124,7 @@
 <script src="static/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
-     <script> window.location.replace("/uploads/{{filename}}%3F{{L_touse}}");</script>
+     <script> window.location.replace("/uploads/{{filename}}%3F{{L_touse}}");</script> 
 
   </body>
 </html>
