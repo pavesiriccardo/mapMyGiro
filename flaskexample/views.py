@@ -84,8 +84,7 @@ def export_route_func(filename):
 
 
 
-KML_opening="""
-<?xml version="1.0" encoding="UTF-8"?>
+KML_opening="""<?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://www.opengis.net/kml/2.2">
   <Document>
     <name>mapMyGiro_route.kml</name>
@@ -120,8 +119,7 @@ KML_opening="""
         <coordinates>
         """
 
-KML_closing="""
-</coordinates>
+KML_closing="""</coordinates>
       </LineString>
     </Placemark>
   </Document>
