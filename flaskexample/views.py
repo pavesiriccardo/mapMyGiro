@@ -9,6 +9,9 @@ import os,json,pickle, simplekml
 def produce_input_page():
     return render_template("input.html")
 
+@app.route('/about_page')
+def about_p():
+  return render_template("about_page.html")
 
 @app.route('/temp_route/<filename>?<L_touse>')
 def show_temp_page(filename,L_touse):
