@@ -32,26 +32,29 @@ def upload_file():
         #print(request.form,'files:',request.files)
         L_touse=request.form['L']
         # check if the post request has the file part
-        if 'file' not in request.files:
+        if "submit_upload" in request.form:
+            file = request.files['file']
+            if 'file' not in request.files:
             #flash('No file part')
-            return redirect('/')
-        file = request.files['file']
+                return redirect('/')
+            if file.filename == '':
+            #flash('No selected file')
+                return redirect('/')
+            if file and allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        elif "submit_example" in request.form:
+            filename='example_directions.kml'
         # if user does not select file, browser also
         # submit an empty part without filename
-        if file.filename == '':
-            #flash('No selected file')
-            return redirect('/')
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            path=backend.load_path(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            if len(L_touse)==0:
-                route_length=backend.path_len(path)
-                L_touse=route_length/100.
-            else:
-                L_touse=float(L_touse)
-            return redirect(url_for('show_temp_page',
-                                    filename=filename,L_touse=L_touse))
+        path=backend.load_path(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        if len(L_touse)==0:
+            route_length=backend.path_len(path)
+            L_touse=route_length/100.
+        else:
+            L_touse=float(L_touse)
+        return redirect(url_for('show_temp_page',
+                                filename=filename,L_touse=L_touse))
     return '''
     <!doctype html>
     <title>Upload new File</title>

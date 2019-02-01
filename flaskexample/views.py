@@ -1,7 +1,7 @@
 from flask import render_template
 from flaskexample import app,backend,JS_google_key,static_google_key
 from flask import request,redirect,url_for,send_from_directory
-import os,json,pickle, simplekml
+import os,json,pickle
 
 
 @app.route('/')
