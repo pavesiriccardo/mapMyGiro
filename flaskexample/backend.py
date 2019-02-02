@@ -1,4 +1,4 @@
-from flaskexample import app,run_model,JS_google_key,static_google_key
+from flaskexample import app,run_model,JS_google_key,static_google_key,google_secret_key
 from flask import render_template,flash,redirect,url_for
 import os,glob,numpy as np,pickle
 import requests
@@ -6,6 +6,11 @@ from multiprocessing.dummy import Pool
 from matplotlib import cm,colors
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
+
+from requests.packages.urllib3.util import parse_url
+import hashlib
+import hmac
+import base64
 
  
 
@@ -151,7 +156,9 @@ def fetch_from_Google(list_of_coords,list_of_filenames):
         print(idx,lat,long)
         center = "{0:.6f}".format(lat)+","+"{0:.6f}".format(long)     #max size=640
         #r = requests.get(url + "center=" + center + "&zoom=" +str(zoom) + "&size=640x640&format=jpg&maptype=satellite&key=" +api_key)
-        r = requests_retry_session().get(url + "center=" + center + "&zoom=" +str(zoom) + "&size=640x640&format=jpg&maptype=satellite&key=" +api_key) 
+        unsigned_url=url + "center=" + center + "&zoom=" +str(zoom) + "&size=640x640&format=jpg&maptype=satellite&key=" +api_key
+        signed_url=sign_url(input_url=unsigned_url,  secret=google_secret_key)
+        r = requests_retry_session().get(signed_url) 
         f = open(list_of_filenames[idx]+'.jpeg', 'wb') 
         f.write(r.content) 
         f.close() 
@@ -275,3 +282,41 @@ def get_route_from_waypoints(coordinate_list):
 	    route.append(all_coords[node].latlong()) #list of pairs of (lat,long) in floats
 	#print(len(route))
 	return route
+
+
+
+
+def sign_url(input_url=None,  secret=None):
+  """ Sign a request URL with a Crypto Key.
+      Usage:
+      from urlsigner import sign_url
+      signed_url = sign_url(input_url=my_url,
+                            client_id=CLIENT_ID,
+                            client_secret=CLIENT_SECRET)
+      Args:
+      input_url - The URL to sign
+      client_id - Your Client ID
+      client_secret - Your Crypto Key
+      Returns:
+      The signed request URL
+  """
+  # Return if any parameters aren't given
+  if not input_url  or not secret:
+    return None
+  # Add the Client ID to the URL
+  #input_url += "&client=%s" % (client_id)
+  url = parse_url(input_url)
+  # We only need to sign the path+query part of the string
+  url_to_sign = url.path + "?" + url.query
+  # Decode the private key into its binary format
+  # We need to decode the URL-encoded private key
+  decoded_key = base64.urlsafe_b64decode(secret)
+  # Create a signature using the private key and the URL-encoded
+  # string using HMAC SHA1. This signature will be binary.
+  signature = hmac.new(decoded_key, url_to_sign.encode(), hashlib.sha1)
+  # Encode the binary signature into base64 for use within a URL
+  encoded_signature = base64.urlsafe_b64encode(signature.digest())
+  original_url = url.scheme + "://" + url.netloc + url.path + "?" + url.query
+  # Return signed URL
+  return original_url + "&signature=" + encoded_signature.decode()
+

@@ -16,6 +16,7 @@ app.config['SECRET_KEY']=os.getenv('SECRET_KEY')
 print(app.secret_key)
 JS_google_key=os.getenv('JS_GMAPS_KEY')
 static_google_key=os.getenv('STC_GMAPS_KEY')
+google_secret_key=os.getenv('GOOGLE_SECRET')
 
 
 from flaskexample import backend,views
