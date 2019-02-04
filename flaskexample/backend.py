@@ -15,52 +15,6 @@ from itertools import product
 
  
 
-@app.route('/uploads/<filename>?<L_touse>')
-def uploaded_file(filename,L_touse):
-	L_touse=float(L_touse)
-	if filename=='map_defined':
-		dic_path_Ltouse=pickle.load(open(os.path.join(app.config['UPLOAD_FOLDER'], filename),'rb'))
-		path=dic_path_Ltouse['path']
-	else:
-		path=load_path(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-	list_of_coords=[{'lat':pnt[0],'lng':pnt[1]} for pnt in path]#[{'lat':37.772, 'lng':-122.214},{'lat':21.291, 'lng':-157.821},{'lat':-18.142, 'lng':178.431},{'lat': -27.467,  'lng':153.027}]
-	minlat=min([pnt[0] for pnt in path])
-	minlong=min([pnt[1] for pnt in path])
-	maxlat=max([pnt[0] for pnt in path])
-	maxlong=max([pnt[1] for pnt in path])
-	center_long=(minlong+maxlong)*.5
-	center_lat=(minlat+maxlat)*.5
-	route_length=path_len(path)
-
-	points_list=points_along_path(path,L_touse)
-	Nsamples=len(points_list)
-	if Nsamples>250:
-		flash('More than 250 images required, it is too many, sorry!')
-		return redirect(url_for('produce_input_page'))
-	#get list of nodes along colored polylines AND including the line endpoints. should start out the first L/2 bit as paved and the last little bit too
-
-	list_of_lines=segmented_nodes_list(path,L=L_touse)
-	list_of_lines=[[{'lat':pnt[0],'lng':pnt[1]} for pnt in single_line] for single_line in list_of_lines]
-	jet=cm.get_cmap('jet',20)
-	#color_list=[colors.to_hex(jet(col_fl)) for col_fl in np.linspace(0,1,len(list_of_lines))]
-	list_of_filenames=[app.config['CUTOUTS_FOLDER']+'/test/'+str(idx) for idx in range(len(points_list))]
-	fetch_from_Google(points_list,list_of_filenames)
-	unpaved_ids,paved_ids=run_model.predict_batch(app.config['CUTOUTS_FOLDER'])
-	all_probabi={idx:prob for (idx,prob) in unpaved_ids+paved_ids}
-	color_list=[colors.to_hex(jet(0))]+[colors.to_hex(jet(all_probabi[idx])) for idx in range(len(points_list))]
-	#Produce list_of_lines encoding the colored polylines
-	#set colors of polylines and export them to the javascript
-
-	#HTML='Path length is: '+str(path_len(path))+' km <BR>'
-	#for pnt in points_list:
-	#	HTML+=str(pnt)+' <BR> '
-	#HTML+='<BR> For a Total of '+str(len(points_list))+' point estimates:'
-	#HTML+=' <BR> '+'The Unpaved pieces are ID: '+str(unpaved_ids)+' <BR> '
-	#HTML+=' <BR> '+'The Paved pieces are ID: '+str(paved_ids)+' <BR> <BR> <BR>'
-	#return HTML #send_from_directory(app.config['UPLOAD_FOLDER'],filename)
-	return render_template("my_output.html",Nsamples=Nsamples,route_length="{:.1f}".format(round(route_length*10)/10.),JS_google_key=JS_google_key,color_list=color_list,list_of_lines=list_of_lines,maxlong=maxlong,minlat=minlat,maxlat=maxlat,minlong=minlong,center_lat=center_lat,center_long=center_long,filename=filename,L_touse=L_touse)
-
-
 
 def load_path(filename):
 	inp=open(filename)
