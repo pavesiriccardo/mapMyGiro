@@ -163,7 +163,7 @@ def fetch_from_Google(list_of_coords,list_of_filenames):
             r = requests_retry_session().get(signed_url)
         except:
             r=requests.get(signed_url)
-        changes_to_try=[-1e-6,1e-6,2e-6,-2e-6,3e-6,-3e-6]
+        changes_to_try=[0,-1e-6,1e-6,2e-6,-2e-6,3e-6,-3e-6]
         my_iterator=product(changes_to_try,changes_to_try)
         change_pair=next(my_iterator,None)
         while r.status_code==500 and change_pair is not None:
