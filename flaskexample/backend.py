@@ -159,7 +159,10 @@ def fetch_from_Google(list_of_coords,list_of_filenames):
         #r = requests.get(url + "center=" + center + "&zoom=" +str(zoom) + "&size=640x640&format=jpg&maptype=satellite&key=" +api_key)
         unsigned_url=url + "center=" + center + "&zoom=" +str(zoom) + "&size=640x640&format=jpg&maptype=satellite&key=" +api_key
         signed_url=sign_url(input_url=unsigned_url,  secret=google_secret_key)
-        r = requests_retry_session().get(signed_url)
+        try:
+            r = requests_retry_session().get(signed_url)
+        except:
+            continue
         changes_to_try=[-1e-6,1e-6,2e-6,-2e-6,3e-6,-3e-6]
         my_iterator=product(changes_to_try,changes_to_try)
         change_pair=next(my_iterator,None)
@@ -168,7 +171,10 @@ def fetch_from_Google(list_of_coords,list_of_filenames):
                 center = "{0:.6f}".format(lat+change_pair[0])+","+"{0:.6f}".format(long+change_pair[1])   
                 unsigned_url=url + "center=" + center + "&zoom=" +str(zoom) + "&size=640x640&format=jpg&maptype=satellite&key=" +api_key
                 signed_url=sign_url(input_url=unsigned_url,  secret=google_secret_key)
-                r = requests_retry_session().get(signed_url)
+                try:
+                    r = requests_retry_session().get(signed_url)
+                except:
+                    continue
                 change_pair=next(my_iterator,None)
         try:
             r.raise_for_status()
