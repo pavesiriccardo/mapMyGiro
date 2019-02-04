@@ -162,7 +162,7 @@ def fetch_from_Google(list_of_coords,list_of_filenames):
         try:
             r = requests_retry_session().get(signed_url)
         except:
-            continue
+            pass
         changes_to_try=[-1e-6,1e-6,2e-6,-2e-6,3e-6,-3e-6]
         my_iterator=product(changes_to_try,changes_to_try)
         change_pair=next(my_iterator,None)
@@ -174,7 +174,7 @@ def fetch_from_Google(list_of_coords,list_of_filenames):
                 try:
                     r = requests_retry_session().get(signed_url)
                 except:
-                    continue
+                    pass
                 change_pair=next(my_iterator,None)
         try:
             r.raise_for_status()
