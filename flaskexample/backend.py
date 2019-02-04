@@ -139,7 +139,7 @@ def empty_cutouts_folder():
 
 
 
-def requests_retry_session(retries=3,backoff_factor=0.4,status_forcelist=(500, 502, 504),session=None):
+def requests_retry_session(retries=2,backoff_factor=0.3,status_forcelist=(500, 502, 504),session=None):
     session = session or requests.Session()
     retry = Retry(total=retries,read=retries,connect=retries,backoff_factor=backoff_factor,status_forcelist=status_forcelist)
     adapter = HTTPAdapter(max_retries=retry)
@@ -162,7 +162,7 @@ def fetch_from_Google(list_of_coords,list_of_filenames):
         try:
             r = requests_retry_session().get(signed_url)
         except:
-            pass
+            r=requests.get(signed_url)
         changes_to_try=[-1e-6,1e-6,2e-6,-2e-6,3e-6,-3e-6]
         my_iterator=product(changes_to_try,changes_to_try)
         change_pair=next(my_iterator,None)
@@ -174,7 +174,7 @@ def fetch_from_Google(list_of_coords,list_of_filenames):
                 try:
                     r = requests_retry_session().get(signed_url)
                 except:
-                    pass
+                    r=requests.get(signed_url)
                 change_pair=next(my_iterator,None)
         try:
             r.raise_for_status()
