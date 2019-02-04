@@ -166,6 +166,7 @@ def fetch_from_Google(list_of_coords,list_of_filenames):
         changes_to_try=[0,-1e-6,1e-6,2e-6,-2e-6,3e-6,-3e-6]
         my_iterator=product(changes_to_try,changes_to_try)
         change_pair=next(my_iterator,None)
+        print(r.status_code,r.status_code==500)
         while r.status_code==500 and change_pair is not None:
                 print('Im having to shift slightly by',change_pair)
                 center = "{0:.6f}".format(lat+change_pair[0])+","+"{0:.6f}".format(long+change_pair[1])   
