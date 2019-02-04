@@ -159,6 +159,10 @@ def fetch_from_Google(list_of_coords,list_of_filenames):
         unsigned_url=url + "center=" + center + "&zoom=" +str(zoom) + "&size=640x640&format=jpg&maptype=satellite&key=" +api_key
         signed_url=sign_url(input_url=unsigned_url,  secret=google_secret_key)
         r = requests_retry_session().get(signed_url) 
+        try:
+        	r.raise_for_status()
+        except:
+        	print(signed_url)
         f = open(list_of_filenames[idx]+'.jpeg', 'wb') 
         f.write(r.content) 
         f.close() 
