@@ -5,7 +5,6 @@ from keras.models import Sequential
 from keras.layers import Dropout, Flatten, Dense,InputLayer,Lambda
 from keras.models import load_model
 import tensorflow.keras.backend as K
-
 from flaskexample import app
 
 import tensorflow as tf
