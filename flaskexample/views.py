@@ -3,6 +3,8 @@ from flask import request,redirect,url_for,send_from_directory,render_template,f
 import os,json,pickle,glob
 from matplotlib import cm,colors
 
+ALLOWED_EXTENSIONS = set(['kml'])
+
 
 @app.route('/')
 @app.route('/input')

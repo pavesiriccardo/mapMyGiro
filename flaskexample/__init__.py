@@ -6,7 +6,6 @@ local_path_stem=os.getenv('PATH_TO_APP')
 UPLOAD_FOLDER = local_path_stem+'/flaskexample/upload_here'
 CUTOUTS_FOLDER=local_path_stem+'/flaskexample/cutouts'
 MODEL_PATH=local_path_stem+'/flaskexample/latest_model.h5'
-ALLOWED_EXTENSIONS = set(['kml'])
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
