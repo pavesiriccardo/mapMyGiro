@@ -1,6 +1,5 @@
 import os,numpy as np
 from flask import Flask, flash, request, redirect, url_for
-from werkzeug.utils import secure_filename
 
 local_path_stem=os.getenv('PATH_TO_APP')
 UPLOAD_FOLDER = local_path_stem+'/flaskexample/upload_here'

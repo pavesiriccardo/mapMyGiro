@@ -2,6 +2,8 @@ from flaskexample import app,backend,JS_google_key,static_google_key,run_model
 from flask import request,redirect,url_for,send_from_directory,render_template,flash
 import os,json,pickle,glob
 from matplotlib import cm,colors
+from werkzeug.utils import secure_filename
+
 
 ALLOWED_EXTENSIONS = set(['kml'])
 
