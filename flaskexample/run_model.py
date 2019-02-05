@@ -8,6 +8,9 @@ from keras.models import load_model
 import tensorflow.keras.backend as K
 from flaskexample import app
 
+from keras.applications.resnet50 import preprocess_input, decode_predictions
+
+
 import tensorflow as tf
 import tensorflow_hub as hub
 
@@ -40,7 +43,7 @@ model_total.compile(optimizer='adam',
 
 
 def predict_batch(foldername):
-        datagen = ImageDataGenerator(rescale=1. / 255)
+        datagen = ImageDataGenerator(preprocessing_function=preprocess_input)
         test_generator = datagen.flow_from_directory(
         foldername,
         target_size=(img_width, img_height),
