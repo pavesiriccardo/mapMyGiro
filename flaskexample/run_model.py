@@ -66,7 +66,7 @@ def predict_batch(foldername):
         test_generator = datagen.flow_from_directory(
         foldername,
         target_size=(img_width, img_height),
-        batch_size=1,
+        batch_size=10,
         class_mode='categorical',
         shuffle=False)
         test_crops = crop_generator(test_generator, target_width) #RP
