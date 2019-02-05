@@ -192,7 +192,7 @@ def compute_results(filename,L_touse):
   maxlong=max([pnt[1] for pnt in path])
   center_long=(minlong+maxlong)*.5
   center_lat=(minlat+maxlat)*.5
-  route_length=path_len(path)
+  route_length=backend.path_len(path)
 
   points_list=backend.points_along_path(path,L_touse)
   Nsamples=len(points_list)
