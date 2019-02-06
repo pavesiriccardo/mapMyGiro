@@ -1,6 +1,11 @@
 import os,numpy as np
 from flask import Flask, flash, request, redirect, url_for
 
+#RUN USING CPU ONLY
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
+os.environ["CUDA_VISIBLE_DEVICES"] = ""
+########
+
 local_path_stem=os.getenv('PATH_TO_APP')
 UPLOAD_FOLDER = local_path_stem+'/flaskexample/upload_here'
 CUTOUTS_FOLDER=local_path_stem+'/flaskexample/cutouts'
