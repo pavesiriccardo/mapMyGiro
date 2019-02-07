@@ -1,2 +1,5 @@
 **/*.jpeg
 */__pycache__/
+gunicorn_log.txt
+*/upload_here/mapMyGiro_route*
+*/upload_here/map_defined
