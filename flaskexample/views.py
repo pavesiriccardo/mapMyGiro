@@ -207,7 +207,7 @@ def compute_results(filename,L_touse):
 
   list_of_lines=backend.segmented_nodes_list(path,L=L_touse)
   list_of_lines=[[{'lat':pnt[0],'lng':pnt[1]} for pnt in single_line] for single_line in list_of_lines]
-  jet=cm.get_cmap('jet',20)
+  jet=cm.get_cmap('inferno',20)
   #color_list=[colors.to_hex(jet(col_fl)) for col_fl in np.linspace(0,1,len(list_of_lines))]
   list_of_filenames=[app.config['CUTOUTS_FOLDER']+'/test/'+str(idx) for idx in range(len(points_list))]
   backend.fetch_from_Google(points_list,list_of_filenames)
