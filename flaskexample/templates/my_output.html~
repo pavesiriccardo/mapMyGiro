@@ -74,7 +74,7 @@
         
         <h3>This route is {{route_length}} miles long and we are sampling it at {{Nsamples}} points.</h3>
         <div style="display:flex; flex-direction: row; justify-content: space-between; align-items: center">
-        <img src="/static/colorbar_bwr.jpg" width="600" height="90">
+        <img src="/static/colorbar2.jpg" width="600" height="90">
         <form id="Export_button" action='/export_route/{{filename}}' method=get>
   <button type="submit" id="export_button" class="btn btn-default btn-lg">Export route!</button>
 </form>
